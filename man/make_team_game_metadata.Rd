@@ -15,6 +15,3 @@ data.frame
 \description{
 Make metadata for team-games
 }
-\note{
-this should be joinable on modeling data without any additional lagging calculations, i.e. all data should be in scope for predictions unless otherwise stated (e.g. outcomes)
-}

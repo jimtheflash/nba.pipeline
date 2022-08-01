@@ -4,10 +4,16 @@
 \alias{add_team_game_windows}
 \title{Add window functions to team-game summary data}
 \usage{
-add_team_game_windows(team_gamelogs, to_roll_regex = "_team|_allowed|_diff")
+add_team_game_windows(
+  team_gamelogs,
+  team_game_metadata,
+  to_roll_regex = "_team|_allowed|_diff|ot_num|wl_num"
+)
 }
 \arguments{
 \item{team_gamelogs}{data.frame of summarised team-game data}
+
+\item{team_game_metadata}{data.frame of more summarised team-game data}
 
 \item{to_roll_regex}{character regex for columns to be rolled up in window functions}
 }

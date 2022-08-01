@@ -10,9 +10,9 @@ tgm <- make_team_game_metadata(gl)
 tgw <- add_team_game_windows(tg, tgm)
 tgs <- add_team_game_streaks(tgw)
 
-# then use the team stuff to start making player summaries
-pg <- make_player_game_summaries(gl, tg)
-pgw <- add_player_game_windows(pg, tgw)
+# # then use the team stuff to start making player summaries
+# pg <- make_player_game_summaries(gl, tg)
+# pgw <- add_player_game_windows(pg, tgw)
 
 # prep for team-level models
 team_inputs <- prep_team_model_inputs(tgs, tgm)
