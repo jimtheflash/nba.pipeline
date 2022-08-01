@@ -1,5 +1,4 @@
 #' Make metadata for team-games
-#' @note this should be joinable on modeling data without any additional lagging calculations, i.e. all data should be in scope for predictions unless otherwise stated (e.g. outcomes)
 #' @param gamelogs data.frame from `prep_gamelogs()`
 #' @return data.frame
 #' @export
@@ -32,8 +31,8 @@ make_team_game_metadata <- function(gamelogs) {
     #### join back onto gamelogs for additional engineering ####
     dplyr::inner_join(
       gamelogs %>%
-        dplyr::select(game_id, team_id, matchup, outcome_wl) %>%
-        dplyr::group_by(team_id, game_id, matchup, outcome_wl) %>%
+        dplyr::select(game_id, team_id, matchup, wl) %>%
+        dplyr::group_by(team_id, game_id, matchup, wl) %>%
         dplyr::distinct() %>%
         dplyr::ungroup() %>%
         dplyr::mutate(
@@ -62,8 +61,8 @@ make_team_game_metadata <- function(gamelogs) {
     dplyr::mutate(
       home_game_streak_including_current = purrr::accumulate(as.numeric(home_away == 'home'), incrementor),
       away_game_streak_including_current = purrr::accumulate(as.numeric(home_away == 'away'), incrementor),
-      loss_streak_excluding_current = purrr::accumulate(as.numeric(dplyr::lag(outcome_wl) == 'L'), incrementor),
-      win_streak_excluding_current = purrr::accumulate(as.numeric(dplyr::lag(outcome_wl) == 'W'), incrementor)
+      loss_streak_excluding_current = purrr::accumulate(as.numeric(dplyr::lag(wl) == 'L'), incrementor),
+      win_streak_excluding_current = purrr::accumulate(as.numeric(dplyr::lag(wl) == 'W'), incrementor)
     ) %>%
     dplyr::ungroup() %>%
 
@@ -101,7 +100,16 @@ make_team_game_metadata <- function(gamelogs) {
       )
     ) %>%
     dplyr::select(-dplyr::ends_with('minutes'),
-                  -dplyr::ends_with('rolling_mean'))
+                  -dplyr::ends_with('rolling_mean')) %>%
+
+    #### create overtime feature ####
+    dplyr::inner_join(
+      gamelogs %>%
+        dplyr::group_by(game_id) %>%
+        dplyr::summarise(ot = dplyr::if_else(sum(min, na.rm = TRUE) > 480, TRUE, FALSE)) %>%
+        dplyr::ungroup(),
+      by = 'game_id'
+    )
 
   #### return output ####
   return(tg_meta)

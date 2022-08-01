@@ -25,7 +25,7 @@ add_player_game_windows <- function(player_gamelogs, team_gamelogs) {
           rolling_mean = ~ dplyr::cummean(as.numeric(.x)),
           rolling_sd = ~ suppressWarnings(cumvar(as.numeric(.x), sd=TRUE)) # suppressing the warnings for NaNs
         ),
-        .names = '{.col}_window_{.fn}'
+        .names = '{.col}_{.fn}'
       )
     ) %>%
     dplyr::ungroup()

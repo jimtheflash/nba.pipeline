@@ -9,8 +9,7 @@ prep_gamelogs <- function(path) {
     read.csv(path) %>%
     janitor::clean_names() %>%
     dplyr::select(-dplyr::ends_with('_rank'), -dplyr::ends_with('pct')) %>%
-    dplyr::mutate(season_type = dplyr::if_else(season_type %in% c('Pre Season', 'Regular Season'), season_type, 'Post Season')) %>%
-    dplyr::rename(outcome_wl = wl)
+    dplyr::mutate(season_type = dplyr::if_else(season_type %in% c('Pre Season', 'Regular Season'), season_type, 'Post Season'))
 
   return(gamelogs)
 }

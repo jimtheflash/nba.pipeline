@@ -20,7 +20,7 @@ make_team_game_summaries <- function(gamelogs, include_vec=get_predictor_vec(), 
     ### join to all the gamelogs ####
     dplyr::inner_join(
       gamelogs %>%
-        dplyr::group_by(season_year, season_type, team_id, game_id, game_date) %>%
+        dplyr::group_by(season_year, season_type, team_id, game_id, game_date, wl) %>%
         dplyr::summarise(
           dplyr::across(
             include_vec[!include_vec %in% exclude_vec],
@@ -58,10 +58,6 @@ make_team_game_summaries <- function(gamelogs, include_vec=get_predictor_vec(), 
     diffs <- team_game_box[[team_var_name]] - team_game_box[[allowed_var_name]]
     team_game_box[[diff_var_name]] <- diffs
   }
-
-  #### add categorical outcomes ####
-  team_game_box$outcome_wl <- dplyr::if_else(team_game_box$pts_team_diff > 0, 'W', 'L')
-
   #### output ####
   return(team_game_box)
 
