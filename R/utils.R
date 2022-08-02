@@ -1,9 +1,9 @@
 NULL
 
-get_predictor_vec <- function(path=system.file('specs', 'predictors', package = 'nba.aggregator')) {
+get_predictor_vec <- function(path=system.file('specs', 'predictors', package = 'nba.pipeline')) {
   readLines(path)
 }
-get_exclusion_vec <- function(path=system.file('specs', 'exclusions', package = 'nba.aggregator')) {
+get_exclusion_vec <- function(path=system.file('specs', 'exclusions', package = 'nba.pipeline')) {
   readLines(path)
 }
 

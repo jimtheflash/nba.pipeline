@@ -61,6 +61,14 @@ prep_team_model_inputs <- function(team_gamelogs, team_game_metadata,
     ) %>%
     stats::setNames(gsub('_opponent$', '', names(.))) %>%
 
+    #### fix logicals to be numeric ####
+    dplyr::mutate(
+      dplyr::across(
+        tidyselect:::where(is.logical),
+        as.numeric
+      )
+    ) %>%
+
     #### remove all outcomes ####
     dplyr::select(-dplyr::matches('outcome'),
                   -wl,
